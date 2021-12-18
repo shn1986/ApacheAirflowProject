@@ -3,6 +3,7 @@ import json
 from csv import DictWriter
 import requests
 import csv
+import pandas as pd
 
 def getStoreData():
     response_stores = requests.get('https://www.cheapshark.com/api/1.0/stores')
@@ -53,19 +54,7 @@ def getDealGameData():
         for i in json_games["deals"]:
             i['gameId'] = gameID
             for deal in i.items():
-                print (deal.keys())
-                #if count == 0:
-                 #   header = deal.keys()
-                  #  csv_writer.writerow(header)
-
-                # Writing data of CSV file
-                #csv_writer.writerow(deal.values())
-            
-            #writer = DictWriter(deal_file, i.keys())
-            #writer.writeheader()
-            #writer.writerows(i)
-        #writer = DictWriter(deal_file, json_games['deals'].keys())
-        #csv.writer(deal_file).writerow(row[1] for row in json_games['deals'].items())
+                print (deal)
         """ for i in json_games["deals"]:
             print (i)
             break """
