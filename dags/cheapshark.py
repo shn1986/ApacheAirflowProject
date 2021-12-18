@@ -1,9 +1,7 @@
 
 import json
-from csv import DictWriter,writer
-from datetime import date
+from csv import DictWriter
 import requests
-import json
 import csv
 
 def getStoreData():
