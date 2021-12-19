@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.operators.mysql_operator import MySqlOperator
-from cheapshark import getData
+from cheapshark import getDealGameData,getStoreData
 
 yesterday_date = datetime.strftime(datetime.now() - timedelta(1), '%Y-%m-%d')
 
@@ -17,6 +17,8 @@ default_args = {
 with DAG('store_dag',default_args=default_args,schedule_interval='@daily', template_searchpath=['/usr/local/airflow/sql_files'], catchup=True) as dag:
 
     t1 = MySqlOperator(task_id='create_mysql_table', mysql_conn_id="mysql_conn2", sql="create_table.sql")
-    t2 = PythonOperator(task_id='gen_store_csv', python_callable=getData)
-    t3 = MySqlOperator(task_id='insert_into_table', mysql_conn_id="mysql_conn2", sql="insert_into_table.sql")
-    t1 >> t2 >> t3
+    t2 = PythonOperator(task_id='gen_store_csv', python_callable=getStoreData)
+    t3 = PythonOperator(task_id='gen_dealgame_csv', python_callable=getDealGameData)
+    t4 = MySqlOperator(task_id='insert_store', mysql_conn_id="mysql_conn2", sql="insert_into_table.sql")
+    t5 = MySqlOperator(task_id='insert_deal', mysql_conn_id="mysql_conn2", sql="insert_into_table.sql")
+    t1 >> [t2,t3] >> t3 >> t5
