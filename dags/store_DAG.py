@@ -19,6 +19,6 @@ with DAG('store_dag',default_args=default_args,schedule_interval='@daily', templ
     t1 = MySqlOperator(task_id='create_mysql_table', mysql_conn_id="mysql_conn2", sql="create_table.sql")
     t2 = PythonOperator(task_id='gen_store_csv', python_callable=getStoreData)
     t3 = PythonOperator(task_id='gen_dealgame_csv', python_callable=getDealGameData)
-    t4 = MySqlOperator(task_id='insert_store', mysql_conn_id="mysql_conn2", sql="insert_into_table.sql")
-    t5 = MySqlOperator(task_id='insert_deal', mysql_conn_id="mysql_conn2", sql="insert_into_table.sql")
-    t1 >> [t2,t3] >> t4 >> t5
+    t4 = MySqlOperator(task_id='insert_store_game_deal', mysql_conn_id="mysql_conn2", sql="insert_into_table.sql")
+    
+    t1 >> [t2,t3] >> t4 
