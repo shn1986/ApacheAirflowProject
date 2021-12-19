@@ -19,11 +19,6 @@ def getStoreData():
 def getDealGameData():
     response_deals = requests.get('https://www.cheapshark.com/api/1.0/deals')
     json_deals = json.loads(response_deals.text)
-    """ the_file = open("deals.csv", "w")
-    writer = DictWriter(the_file, json_deals[0].keys())
-    writer.writeheader()
-    writer.writerows(json_deals)
-    the_file.close() """
     isfirsttime  = 1
     game_file = open("gamesinfo.csv", "a")
     cheapprice_file = open("cheapestPriceEver.csv", "a")
@@ -46,18 +41,24 @@ def getDealGameData():
         writer = DictWriter(cheapprice_file, json_games['cheapestPriceEver'].keys())
         if isfirsttime == 1:
             writer.writeheader()
-            isfirsttime = 0
+            #isfirsttime = 0
+            #print (json_games['cheapestPriceEver'])
+            #print (json_games['cheapestPriceEver'].keys())
         csv.writer(cheapprice_file).writerow(row[1] for row in json_games['cheapestPriceEver'].items())
 
-        csv_writer = csv.writer(deal_file)
-        count = 0
+        newusers = dict()
         for i in json_games["deals"]:
-            i['gameId'] = gameID
+            newusers['item']=i #[i.pop('storeID')] = i
+            writer = DictWriter(deal_file, newusers['item'].keys())
+            if isfirsttime == 1:
+                writer.writeheader()
+                isfirsttime = 0
+                #print(newusers['item'].keys())
+                #print (newusers)
+            csv.writer(deal_file).writerow(row[1] for row in newusers['item'].items())
+            '''i['gameId'] = gameID
             for deal in i.items():
-                print (deal)
-        """ for i in json_games["deals"]:
-            print (i)
-            break """
+                print (deal)'''
         break
 
     cheapprice_file.close()
