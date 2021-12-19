@@ -46,16 +46,16 @@ def getDealGameData():
             #print (json_games['cheapestPriceEver'].keys())
         csv.writer(cheapprice_file).writerow(row[1] for row in json_games['cheapestPriceEver'].items())
 
-        newusers = dict()
+        newdeal = dict()
         for i in json_games["deals"]:
-            newusers['item']=i #[i.pop('storeID')] = i
-            writer = DictWriter(deal_file, newusers['item'].keys())
+            newdeal['item']=i #[i.pop('storeID')] = i
+            writer = DictWriter(deal_file, newdeal['item'].keys())
             if isfirsttime == 1:
                 writer.writeheader()
                 isfirsttime = 0
-                #print(newusers['item'].keys())
-                #print (newusers)
-            csv.writer(deal_file).writerow(row[1] for row in newusers['item'].items())
+                #print(newdeal['item'].keys())
+                #print (newdeal)
+            csv.writer(deal_file).writerow(row[1] for row in newdeal['item'].items())
             '''i['gameId'] = gameID
             for deal in i.items():
                 print (deal)'''
